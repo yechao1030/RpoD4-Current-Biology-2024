@@ -1,3 +1,5 @@
+load('Fig3A_data_1.mat')
+
 s = s_VLL;
 sall_VLL = [];
 
