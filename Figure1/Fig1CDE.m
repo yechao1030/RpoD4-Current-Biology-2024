@@ -126,7 +126,7 @@ set(gca,'FontSize',14)
 %% Fig.1E_delkaiBC PrpoD4-EYFP vs ToD
 clear 
 
-load('delkaiBC_ML_2475_DT_data.mat')
+load('Fig1G_data.mat')
 
 T_delkaiBC = [];
 T_delkaiBC_all = [];
