@@ -6,7 +6,7 @@ tfreq = 0.01;
 t = 0:tfreq:100;
 
 
-freq1 = 6; % Change accordingly for Figure 2D
+freq1 = 12; % Change accordingly for Figure 2D
 g1 = 50; % gc
 a1 = 1; % ac
 w1 = 2*pi/freq1; %  ωc average cell division frequency.
@@ -108,7 +108,7 @@ for j = 1:length(x)
 end
 
 figure
-plot(x,pam,'c-','linewidth',2)
+plot(x,pam,'c-','linewidth',4)
 set(gca,'XTick',0:6:48)
 xlim([0 48])
 grid on

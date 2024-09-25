@@ -1,6 +1,5 @@
-%% Detrend rpoD4 signal using basal expression level for each movie
+%% Fig.4B
 clear 
-
 load("Fig4AB_data.mat")
 
 %%% WT %%%
@@ -55,7 +54,8 @@ f = polyfit(tmins,xmins,2);
         s_delrpoD4{i,2}(j).MYs_det = ys - ts.^2*f(1) - ts*f(2) - f(3);
     end
 end
-%% Get rpoD4 peak information
+
+%%% Get rpoD4 peak information %%%
 %%% WT %%%
 s = s_ML;
 
@@ -80,7 +80,7 @@ end
 
 
 
-%% Plot Fig4B
+%%% Plot Fig4B %%%
 %---- WT Peak amplitude of detrended data -----%
 Amp = pkmatun_wt(:,5); % Peak amplitude of detrended data
 CT = pkmatun_wt(:,4); % Circadian time
@@ -176,7 +176,8 @@ legend({'WT','\it\DeltarpoD4'},'Location','northeast')
 set(gca,'FontSize',18)
 
 
-%% Compile data into one Schnitzcell file
+%% Fig.4A
+%%% Compile data into one Schnitzcell file %%%
 sall_wt = [];
 sall_delrpoD4 = [];
 
@@ -190,11 +191,11 @@ s1 = s_delrpoD4{k,2};
 sall_delrpoD4 = cat(2,sall_delrpoD4,s1);
 end
 
-%% Get cell properties inclduing cell length at birth (i.e. sb)
+%%% Get cell properties inclduing cell length at birth (i.e. sb) %%%
 [age_wt, ctob_wt,ctod_wt,yob_wt,sb_wt, sd_wt, size_diff_wt, relsize_diff_wt, elongrate_wt, cellno_wt] = schnitzphysprops2(sall_wt,[],'hrst','lengthMicrons_smooth','MYs_det');
 [age_delrpoD4, ctob_delrpoD4,ctod_delrpoD4,yob_delrpoD4,sb_delrpoD4, sd_delrpoD4, size_diff_delrpoD4, relsize_diff_delrpoD4, elongrate_delrpoD4, cellno_delrpoD4] = schnitzphysprops2(sall_delrpoD4,[],'hrst','lengthMicrons_smooth','MYs_det');
 
-%% Plot Fig4A
+%%% Plot Fig4A %%%
 clear xs1 yperx1 lperx1
 
 xs1 = unique(ctob_wt);
@@ -283,3 +284,72 @@ xlabel('Time of day (h)','FontWeight','bold')
 ylabel('Birth length (\mum)','FontWeight','bold')
 legend({'WT','\it\DeltarpoD4'},'Location','northeast')
 set(gca,'FontSize',18)
+
+%% Fig.4C
+clear
+load("Ptrc-rpoD4-2021-04-26_data.mat")
+
+figure;
+LB = [LB_WT;LB_rpoD4OX];
+groupIdx = [ones(size(LB_WT));2*ones(size(LB_rpoD4OX))];
+violin = violinplot(LB,groupIdx);
+xticklabels({'WT','\itrpoD4OX'});
+ylabel('Birth length (\mum)','fontweight','bold')
+%ylim([2 5.5])
+set(gca,'FontSize',16);
+
+violin(1,1).ViolinColor = 'c';
+violin(1,2).ViolinColor = 'm';
+violin(1,1).ScatterPlot.SizeData = 10;
+violin(1,2).ScatterPlot.SizeData = 10;
+
+
+%% Fig.4D
+clear
+load("Ptrc_sigma_OX_data.mat")
+
+figure;
+
+LB = [A(:,11);A(:,1);A(:,2);A(:,3);A(:,4);A(:,5);A(:,6);A(:,8);A(:,7);A(:,9);...
+    A(:,10);A(:,12);A(:,13);A(:,14);A(:,15);A(:,16);A(:,17);A(:,19);A(:,18);...
+    A(:,20);A(:,21)];
+groupIdx = [ones(size(A(:,11)));2*ones(size(A(:,1)));3*ones(size(A(:,2)));...
+    4*ones(size(A(:,3)));5*ones(size(A(:,4)));6*ones(size(A(:,5)));...
+    7*ones(size(A(:,6)));8*ones(size(A(:,8)));9*ones(size(A(:,7)));...
+    10*ones(size(A(:,9)));11*ones(size(A(:,10)));12*ones(size(A(:,12)));...
+    13*ones(size(A(:,13)));14*ones(size(A(:,14)));15*ones(size(A(:,15)));...
+    16*ones(size(A(:,16)));17*ones(size(A(:,17)));18*ones(size(A(:,19)));...
+    19*ones(size(A(:,18)));20*ones(size(A(:,20)));21*ones(size(A(:,21)))];
+violin = violinplot(LB,groupIdx,'ViolinColor',[0.8,0.8,0.8]);
+
+violin(1,14).ViolinColor = [0.9290 0.6940 0.1250];
+violin(1,15).ViolinColor = [1,0,0];
+violin(1,16).ViolinColor = [0.9290 0.6940 0.1250];
+violin(1,18).ViolinColor = [0.9290 0.6940 0.1250];
+
+for i = 1:21
+    violin(1,i).ScatterPlot.SizeData = 10;
+end
+
+
+xticklabels({'WT','\itrpoD1','\itrpoD2','\itrpoD3','\itrpoD4','\itrpoD5'...
+    ,'\itrpoD6','\itsigF','\itsigF2','\itsigG','\itsigI','\itrpoD1OX'...
+    ,'\itrpoD2OX','\itrpoD3OX','\itrpoD4OX','\itrpoD5OX','\itrpoD6OX'...
+    ,'\itsigFOX','\itsigF2OX','\itsigGOX','\itsigIOX'});
+xtickangle(45)
+ylabel('Cell length (\mum)','fontweight','bold')
+set(gca,'FontSize',16);
+
+%% Fig.4E
+clear
+load("Ptrc-rpoD4 dose response curve data.mat")
+
+figure;
+
+[hillCoeff ec50]=doseResponse(d,r);
+xlabel('[IPTG] \muM','FontWeight','bold')
+ylabel('Cell length (\mum)','FontWeight','bold')
+grid on
+set(gca,'FontSize',16)
+
+xlim([0.1 10000])
