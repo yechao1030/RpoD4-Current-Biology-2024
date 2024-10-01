@@ -17,9 +17,11 @@ plot(T_delkaiBC(:,15),Y_delkaiBC(:,15),'r-',lk,pk,'yo','LineWidth',2, 'MarkerSiz
 nightmodeon(schnitz1{18,2},12,1);
 xlabel('')
 ylabel('P_{rpoD4}-EYFP (a.u.)','fontweight','bold')
-ylim([400 1200])
+title('\it\DeltakaiBC')
+ylim([300 1100])
 xlim([24 96])
 set(gca,'XTick',12*(0:20));
+set(gca,'YTick',100*(0:20));
 set(gca,'FontSize',12);
 grid on;
 
@@ -57,9 +59,11 @@ plot(T(:,32),Y(:,32),'c-',lk,pk,'mo','LineWidth',2, 'MarkerSize',8);
 nightmodeon(s_wt{16,2},12,1);
 xlabel('')
 ylabel('RpoD4-EYFP (a.u.)','fontweight','bold')
-ylim([300 1000])
+title('WT')
+ylim([200 900])
 xlim([0 72])
 set(gca,'XTick',12*(0:20));
+set(gca,'YTick',100*(0:20));
 set(gca,'FontSize',12);
 grid on;
 
@@ -95,9 +99,11 @@ plot(T(:,119),Y(:,119),'r-',lk,pk,'yo','LineWidth',2, 'MarkerSize',8);
 nightmodeon(s_delkaiBC{13,2},12,1);
 xlabel('')
 ylabel('RpoD4-EYFP (a.u.)','fontweight','bold')
-ylim([300 1000])
+title('\it\DeltakaiBC')
+ylim([200 900])
 xlim([0 72])
 set(gca,'XTick',12*(0:20));
+set(gca,'YTick',100*(0:20));
 set(gca,'FontSize',12);
 grid on;
 
@@ -345,7 +351,7 @@ pkmatun_wt = [];
 
 
 for i = 2:length(s_wt)
-    [pkmatun] = findpeaksmethod_RpoD4(s_wt{i,2},'hrst','MYs_det','lengthMicrons_smooth');
+    [pkmatun] = findpeaksmethod_RpoD4_v1(s_wt{i,2},'hrst','MYs_det','lengthMicrons_smooth');
     
     pkmatun_wt = cat(1,pkmatun_wt,pkmatun);
 end
@@ -354,7 +360,7 @@ end
 pkmatun_delkaiBC = [];
 
 for i = 2:length(s_delkaiBC)
-    [pkmatun] = findpeaksmethod_RpoD4(s_delkaiBC{i,2},'hrst','MYs_det','lengthMicrons_smooth');
+    [pkmatun] = findpeaksmethod_RpoD4_v1(s_delkaiBC{i,2},'hrst','MYs_det','lengthMicrons_smooth');
     
     pkmatun_delkaiBC = cat(1,pkmatun_delkaiBC,pkmatun);
 end
