@@ -32,7 +32,7 @@ CL = []; % cell length at YFP peak
         [pks locs w p] = findpeaks(y,t,'MinPeakProminence',100);
         [pks0 idx0] = findpeaks(y,'MinPeakProminence',100);
         
-        ctlocs = mod(locs,24.75);
+        ctlocs = mod(locs,24);
         schnitz = schnitzes(idx0);
         yfp = y(idx0);
         cl = l(idx0);
