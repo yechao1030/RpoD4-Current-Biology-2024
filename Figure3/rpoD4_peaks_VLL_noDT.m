@@ -3,19 +3,17 @@ s = s_VLL;
 pkmatun_wt = [];
 
 for i = 2:11
-    [pkmatun] = findpeaksmethod_rpoD4_v2(s{i,2},'hrst','MYs_det','lengthMicrons_smooth');
+    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,120,25);
     pkmatun_wt = cat(1,pkmatun_wt,pkmatun);
 end
 
-% end
 
 %% WT
 %---- Peak amplitude of detrended data normalised by mean pulse height -----%
 Amp = pkmatun_wt(:,5); % Peak amplitude of detrended data
 CT = pkmatun_wt(:,4); % Circadian time
 
-clear xs1
-clear yperx1
+clear xs1 yperx1 xs2 meanyperx1 stdyperx1 meanyperx2 stdyperx2 s2
 
 xs1 = unique(CT);
 yperx1 = cell(length(xs1),1);
@@ -26,9 +24,6 @@ yperx1 = cell(length(xs1),1);
         yperx1{whereinxs} = cat(1,yperx1{whereinxs},Amp(j));
  end
 
-clear meanyperx1
-clear stdyperx1
-clear serrmean1
 
 for i = 1:length(yperx1)
     meanyperx1(i) = mean(yperx1{i});
@@ -37,10 +32,6 @@ for i = 1:length(yperx1)
 end
 
 meany_VLL = mean(meanyperx1);
-
-clear xs2
-clear meanyperx2
-clear stdyperx2
 
 xs2 = cat(1,xs1,xs1+24);%24-26
 meanyperx2 = [meanyperx1,meanyperx1];
@@ -67,7 +58,6 @@ xlabel('Time of day (h)','FontWeight','bold')
 ylabel('Norm. pulse height (a.u.)','FontWeight','bold')
 %title('WT')
 set(gca,'FontSize',18)
-%saveas(gcf,['Fig5_4A'],'fig');saveas(gcf,['Fig5_4A'],'svg');
 
 meanyperx2_VLL = meanyperx2;
 xs2_VLL = xs2;
@@ -78,8 +68,7 @@ xs2_VLL = xs2;
 Amp = pkmatun_wt(:,5); % Peak amplitude of detrended data
 CT = pkmatun_wt(:,4); % Circadian time
 
-clear xs1
-clear yperx1
+clear xs1 yperx1 xs2 meanyperx1 stdyperx1 meanyperx2 stdyperx2 s2
 
 xs1 = unique(CT);
 yperx1 = cell(length(xs1),1);
@@ -90,19 +79,12 @@ yperx1 = cell(length(xs1),1);
         yperx1{whereinxs} = cat(1,yperx1{whereinxs},Amp(j));
  end
 
-clear meanyperx1
-clear stdyperx1
-clear serrmean1
 
 for i = 1:length(yperx1)
     meanyperx1(i) = mean(yperx1{i});
     stdyperx1(i) = std(yperx1{i});
     serrmean1(i) = stdyperx1(i)./sqrt(length(yperx1{i}));
 end
-
-clear xs2
-clear meanyperx2
-clear stdyperx2
 
 xs2 = cat(1,xs1,xs1+24);%24-26
 meanyperx2 = [meanyperx1,meanyperx1];
@@ -129,13 +111,14 @@ xlabel('Time of day (h)','FontWeight','bold')
 ylabel('Pulse amplitude (a.u.)','FontWeight','bold')
 %title('WT')
 set(gca,'FontSize',18)
-%saveas(gcf,['Fig5_4A'],'fig');saveas(gcf,['Fig5_4A'],'svg');
 
 
 %%
 %---- Peak width of non-detrended data -----%
 Width = pkmatun_wt(:,6); % Peak width of detrended data
 CT = pkmatun_wt(:,4); % Circadian time
+
+clear xs1 yperx1 xs2 meanyperx1 stdyperx1 meanyperx2 stdyperx2 s2
 
 xs1 = unique(CT);
 yperx1 = cell(length(xs1),1);
