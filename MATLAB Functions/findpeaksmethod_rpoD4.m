@@ -1,11 +1,19 @@
-function [pkmatun] = findpeaksmethod_rpoD4(schnitz,time,ylabel,length);
+function [pkmatun] = findpeaksmethod_rpoD4(schnitz,time,ylabel,length,period,cutoff_start,cutoff_end,prominence)
+
+% function to find unique peaks of rpoD4 expression time traces
+% "schnitz, time, ylabel & lenghth" are all Schnitzcell variables
+% "period" is the clock period, the period for WT clock is 24, and the
+% period for KaiR393C mutant is 15.
+% "cutoff_start" & "cutoff_end" defines the time frame in which the analysis is
+% carried out
+% "prominence" is the threshold for filtering a genuine expression peak from
+% background noise. Please see Methods for which prominence threshold is
+% used for data acquired under different conditions
 
 [Y salt] = schnitzTables(schnitz,ylabel);
 [T salt] = schnitzTables(schnitz,time);
 [L salt] = schnitzTables(schnitz,length);
 
-
-cutoff = 0;
 
 Pks = []; % Peak amplitude
 Locs = []; % Location of the peak
@@ -21,18 +29,15 @@ CL = []; % cell length at YFP peak
         y = Y(:,k);
         l = L(:,k);
         schnitzes = salt(:,k);
-        y = y(t>=cutoff);
-        s = salt(t>=cutoff);
-        t = t(t>=cutoff);
-        %f = polyfit(t,y,2); % detrend data by fitting a polynormial curve for the data
-%        ypol = y-t.^2*f(1)-t*f(2)-f(3);
+        y = y(t>=cutoff_start & t<=cutoff_end);
+        s = salt(t>=cutoff_start & t<=cutoff_end);
+        t = t(t>=cutoff_start & t<=cutoff_end);
+
         if size(t,1)>=3
-%         [pks locs w p] = findpeaks(ypol,t,'MinPeakProminence',100);
-%         [pks0 idx0] = findpeaks(ypol,'MinPeakProminence',100);
-        [pks locs w p] = findpeaks(y,t,'MinPeakProminence',100);
-        [pks0 idx0] = findpeaks(y,'MinPeakProminence',100);
+        [pks locs w p] = findpeaks(y,t,'MinPeakProminence',prominence);
+        [pks0 idx0] = findpeaks(y,'MinPeakProminence',prominence);
         
-        ctlocs = mod(locs,24);
+        ctlocs = mod(locs,period);
         schnitz = schnitzes(idx0);
         yfp = y(idx0);
         cl = l(idx0);

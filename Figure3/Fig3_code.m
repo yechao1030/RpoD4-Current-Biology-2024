@@ -369,7 +369,7 @@ end
 pkmatun_wt = [];
 
 for i = 2:size(s,1)
-    [pkmatun] = findpeaksmethod_rpoD4_R393C(s{i,2},'hrst','MYs_det','lengthMicrons_smooth');
+    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',15,0,30,100);
     
     pkmatun_wt = cat(1,pkmatun_wt,pkmatun);
 end
