@@ -244,7 +244,7 @@ s = s_ML;
 pkmatun_wt = [];
 
 for i = 2:20
-    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,100);
+    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,144,100);
     
     pkmatun_wt = cat(1,pkmatun_wt,pkmatun);
 end
@@ -339,7 +339,7 @@ pkmatun_delkaiBC = [];
 
 
 for i = 2:19
-    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,100);
+    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,144,100);
     
     pkmatun_delkaiBC = cat(1,pkmatun_delkaiBC,pkmatun);
 end
