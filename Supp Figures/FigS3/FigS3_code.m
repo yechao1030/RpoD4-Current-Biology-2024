@@ -82,8 +82,8 @@ legend({'\itrpoD4 non-induced','\itrpoD4OX'},'Location','northwest')
 
 %% Fig.S3D
 figure; % box plot of period (BioDare2, detrended data)
-period = [rpoD4_kaiBC_dtr_period;rpoD4OX_kaiBC_dtr_period];
-groupIdx = [ones(size(rpoD4_kaiBC_dtr_period));2*ones(size(rpoD4OX_kaiBC_dtr_period))];
+period = [rpoD4_period;rpoD4OX_period];
+groupIdx = [ones(size(rpoD4_period));2*ones(size(rpoD4OX_period))];
 plot_box_scatter(period,groupIdx,'color',{'k','m'},'symbol',{'o','o'},'opt',1);
 xticklabels({'rpoD4 non-induced','rpoD4OX'});
 ylabel('Period (h)','fontweight','bold')
