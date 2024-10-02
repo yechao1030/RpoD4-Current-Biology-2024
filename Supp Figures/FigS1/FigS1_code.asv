@@ -351,7 +351,7 @@ pkmatun_wt = [];
 
 
 for i = 2:length(s_wt)
-    [pkmatun] = findpeaksmethod_rpoD4(s_wt{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,66,40);
+    [pkmatun] = findpeaksmethod_rpoD4(s_wt{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,72,40);
     
     pkmatun_wt = cat(1,pkmatun_wt,pkmatun);
 end
@@ -360,7 +360,7 @@ end
 pkmatun_delkaiBC = [];
 
 for i = 2:length(s_delkaiBC)
-    [pkmatun] = findpeaksmethod_rpoD4(s_delkaiBC{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,66,40);
+    [pkmatun] = findpeaksmethod_rpoD4(s_delkaiBC{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,72,40);
     
     pkmatun_delkaiBC = cat(1,pkmatun_delkaiBC,pkmatun);
 end
@@ -457,7 +457,6 @@ xlim([0 48])
 ylim([0 6])
 xlabel('Time of day (h)','FontWeight','bold')
 ylabel('Pulse width (h)','FontWeight','bold')
-title('WT')
 set(gca,'FontSize',18)
 
 %% Fig.S1I (delkaiBC)
