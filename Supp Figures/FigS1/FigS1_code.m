@@ -40,10 +40,122 @@ set(gca,'XTick',12*(0:20));
 set(gca,'FontSize',12);
 grid on;
 
-%% Fig.S1C (WT)
+%% Fig.S1B WT
 clear
 
 load('FigS1_data.mat')
+
+s = s_ML;
+
+pkmatun_wt = [];
+
+for i = 2:20
+    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,144,100);
+    
+    pkmatun_wt = cat(1,pkmatun_wt,pkmatun);
+end
+
+%---- Peak width of detrended data -----%
+Width = pkmatun_wt(:,6); % Peak width of detrended data
+CT = pkmatun_wt(:,4); % Circadian time
+
+clear xs1 yperx1 xs2 meanyperx1 stdyperx1 meanyperx2 stdyperx2 s2
+
+xs1 = unique(CT);
+yperx1 = cell(length(xs1),1);
+
+
+ for j = 1:length(CT)
+        whereinxs = find(xs1 == CT(j));
+        yperx1{whereinxs} = cat(1,yperx1{whereinxs},Width(j));
+ end
+
+for i = 1:length(yperx1)
+    meanyperx1(i) = mean(yperx1{i});
+    stdyperx1(i) = std(yperx1{i});
+    serrmean1(i) = stdyperx1(i)./sqrt(length(yperx1{i}));
+end
+
+xs2 = cat(1,xs1,xs1+24);
+meanyperx2 = [meanyperx1,meanyperx1];
+stdyperx2 = [stdyperx1,stdyperx1];
+
+figure;
+curve1 = meanyperx2 + stdyperx2;
+curve2 = meanyperx2 - stdyperx2;
+x2 = [xs2', fliplr(xs2')];
+inBetween = [curve1, fliplr(curve2)];
+h = fill(x2, inBetween,'c','LineStyle','none');
+h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+set(h,'facealpha',0.2)
+hold on;
+plot(xs2, meanyperx2, '-','color','c','LineWidth', 2);
+set(gca,'XTick',12*(0:40));
+grid on
+nightmodeon(s_ML{2,2},12,1);
+xlim([0 48])
+ylim([1 7])
+xlabel('Time of day (h)','FontWeight','bold')
+ylabel('Pulse width (h)','FontWeight','bold')
+title('WT')
+set(gca,'FontSize',18)
+
+%% Fig.S1C delkaiBC
+s = s_delkaiBC_ML;
+
+pkmatun_delkaiBC = [];
+
+for i = 2:19
+    [pkmatun] = findpeaksmethod_rpoD4(s{i,2},'hrst','MYs_det','lengthMicrons_smooth',24,0,144,100);
+    
+    pkmatun_delkaiBC = cat(1,pkmatun_delkaiBC,pkmatun);
+end
+%---- Peak width of detrended data -----%
+Width = pkmatun_delkaiBC(:,6); % Peak width of detrended data
+CT = pkmatun_delkaiBC(:,4); % Circadian time
+
+clear xs1 yperx1 xs2 meanyperx1 stdyperx1 meanyperx2 stdyperx2 s2
+
+xs1 = unique(CT);
+yperx1 = cell(length(xs1),1);
+
+
+ for j = 1:length(CT)
+        whereinxs = find(xs1 == CT(j));
+        yperx1{whereinxs} = cat(1,yperx1{whereinxs},Width(j));
+ end
+
+for i = 1:length(yperx1)
+    meanyperx1(i) = mean(yperx1{i});
+    stdyperx1(i) = std(yperx1{i});
+    serrmean1(i) = stdyperx1(i)./sqrt(length(yperx1{i}));
+end
+
+xs2 = cat(1,xs1,xs1+24);
+meanyperx2 = [meanyperx1,meanyperx1];
+stdyperx2 = [stdyperx1,stdyperx1];
+
+figure;
+curve1 = meanyperx2 + stdyperx2;
+curve2 = meanyperx2 - stdyperx2;
+x2 = [xs2', fliplr(xs2')];
+inBetween = [curve1, fliplr(curve2)];
+h = fill(x2, inBetween,'r','LineStyle','none');
+h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+set(h,'facealpha',0.2)
+hold on;
+plot(xs2, meanyperx2, '-','color','r','LineWidth', 2);
+set(gca,'XTick',12*(0:40));
+grid on
+nightmodeon(s_delkaiBC{2,2},12,1);
+xlim([0 48])
+ylim([1 7])
+xlabel('Time of day (h)','FontWeight','bold')
+ylabel('Pulse width (h)','FontWeight','bold')
+title('\it\DeltakaiBC')
+set(gca,'FontSize',18)
+
+%% Fig.S1F (WT)
 
 [Y salt] = schnitzTables(s_wt{8,2},'MYs');
 [T salt] = schnitzTables(s_wt{8,2},'hrst');
@@ -83,7 +195,7 @@ set(gca,'FontSize',12);
 grid on;
 
 
-%% Fig.S1D (delkaiBC)
+%% Fig.S1G (delkaiBC)
 [Y salt] = schnitzTables(s_delkaiBC{13,2},'MYs');
 [L salt] = schnitzTables(s_delkaiBC{13,2},'lengthMicrons_smooth');
 [T salt] = schnitzTables(s_delkaiBC{13,2},'hrst');
@@ -123,7 +235,8 @@ set(gca,'FontSize',12);
 grid on;
 
 
-%% Fig.S1E (WT PrpoD4-EYFP vs ToD)
+%% Fig.S1H
+%%% WT PrpoD4-EYFP vs ToD
 clear
 
 load('FigS1_data.mat')
@@ -182,6 +295,7 @@ end
 
 
 figure;
+subplot(2,1,1)
 plot(T_wt,Y_wt,'.-');
 hold on;
 
@@ -198,16 +312,17 @@ plot(xs,meanyperx,'y-','LineWidth',4)
 
 
 title('WT')
-xlabel('Time after cell division (h)','FontWeight','bold');
-ylabel('Detrended RpoD4-EYFP (a.u.)','FontWeight','bold')
+%xlabel('Time after cell division (h)','FontWeight','bold');
+%ylabel('Detrended RpoD4-EYFP (a.u.)','FontWeight','bold')
 grid on;
 xline(0,'k--','LineWidth',4)
 xlim([-9,9]);
 ylim([-200,400]);
 set(gca,'XTick',3*(-40:40));
+set(gca,'YTick',100*(-10:10));
 set(gca,'FontSize',14)
 
-%% Fig.1F (delkaiBC PrpoD4-EYFP vs ToD)
+%%% delkaiBC PrpoD4-EYFP vs ToD
 clear
 
 load('FigS1_data.mat')
@@ -263,7 +378,7 @@ end
 
 
 
-figure;
+subplot(2,1,2)
 plot(T_delkaiBC,Y_delkaiBC,'.-');
 hold on;
 
@@ -280,12 +395,13 @@ plot(xs,meanyperx,'y-','LineWidth',4)
 
 title('\it\DeltakaiBC')
 xlabel('Time after cell division (h)','FontWeight','bold');
-ylabel('Detrended RpoD4-EYFP (a.u.)','FontWeight','bold')
+%ylabel('Detrended RpoD4-EYFP (a.u.)','FontWeight','bold')
 grid on;
 xline(0,'k--','LineWidth',4)
 xlim([-9,9]);
 ylim([-200,400]);
 set(gca,'XTick',3*(-40:40));
+set(gca,'YTick',100*(-10:10));
 set(gca,'FontSize',14)
 
 
@@ -366,7 +482,7 @@ for i = 2:length(s_delkaiBC)
 end
 
 
-%% Fig.S1G (WT)
+%% Fig.S1I (WT)
 %---- Peak height of detrended data -----%
 Amp = pkmatun_wt(:,5); % Peak amplitude of detrended data
 CT = pkmatun_wt(:,4); % Circadian time
@@ -400,6 +516,7 @@ x2 = [xs2', fliplr(xs2')];
 inBetween = [curve1, fliplr(curve2)];
 h = fill(x2, inBetween,'c','LineStyle','none');
 h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+uistack(h,'bottom')
 set(h,'facealpha',0.2)
 hold on;
 plot(xs2, meanyperx2, '-','color','c','LineWidth', 2);
@@ -414,7 +531,7 @@ title('WT')
 set(gca,'FontSize',18)
 
 
-%% Fig.S1H (WT)
+%% Fig.S1J (WT)
 %---- Peak width of detrended data -----%
 Width = pkmatun_wt(:,6); % Peak width of detrended data
 CT = pkmatun_wt(:,4); % Circadian time
@@ -447,6 +564,7 @@ x2 = [xs2', fliplr(xs2')];
 inBetween = [curve1, fliplr(curve2)];
 h = fill(x2, inBetween,'c','LineStyle','none');
 h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+uistack(h,'bottom')
 set(h,'facealpha',0.2)
 hold on;
 plot(xs2, meanyperx2, '-','color','c','LineWidth', 2);
@@ -460,7 +578,7 @@ ylabel('Pulse width (h)','FontWeight','bold')
 title('WT')
 set(gca,'FontSize',18)
 
-%% Fig.S1I (delkaiBC)
+%% Fig.S1K (delkaiBC)
 %---- Peak height of detrended data -----%
 Amp = pkmatun_delkaiBC(:,5);
 CT = pkmatun_delkaiBC(:,4);
@@ -494,6 +612,7 @@ x2 = [xs2', fliplr(xs2')];
 inBetween = [curve1, fliplr(curve2)];
 h = fill(x2, inBetween,'r','LineStyle','none');
 h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+uistack(h,'bottom')
 set(h,'facealpha',0.2)
 hold on;
 plot(xs2, meanyperx2, '-','color','r','LineWidth', 2);
@@ -507,7 +626,7 @@ ylabel('Pulse amplitude (a.u.)','FontWeight','bold')
 title('\it\DeltakaiBC')
 set(gca,'FontSize',18)
 
-%% Fig.S1J (delkaiBC)
+%% Fig.S1L (delkaiBC)
 %---- Peak width of detrended data -----%
 Width = pkmatun_delkaiBC(:,6); % Peak width of detrended data
 CT = pkmatun_delkaiBC(:,4); % Circadian time
@@ -540,6 +659,7 @@ x2 = [xs2', fliplr(xs2')];
 inBetween = [curve1, fliplr(curve2)];
 h = fill(x2, inBetween,'r','LineStyle','none');
 h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+uistack(h,'bottom')
 set(h,'facealpha',0.2)
 hold on;
 plot(xs2, meanyperx2, '-','color','r','LineWidth', 2);
