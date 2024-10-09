@@ -94,6 +94,7 @@ violin(1,4).ViolinColor = 'y';
 xticklabels({'WT','\it\DeltarpoD4','\it\DeltakaiBC','\it\DeltakaiBC\DeltarpoD4'});
 ylabel('Birth length (\mum)','fontweight','bold')
 ylim([2 5.5])
+set(gca,'YTick',0.5*(0:40));
 set(gca,'FontSize',14);
 
 
